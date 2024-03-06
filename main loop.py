@@ -29,14 +29,14 @@ conn.close()
 
 
 
-
-
 while True:
 
     logged_in = False
 
     if logged_in == False:
-        input("enter 1 to create and account and 2 to login, enter 3 to break")
+        input("1: Create New Account\n"
+              "2: Login\n"
+              "3: Quit")
         # verify credentials and login
 
     else:
@@ -45,43 +45,65 @@ while True:
 
         if account_type == "member":
             while True:
-                input = input("enter 1 for schedule management, 2 for profile management, 3 for dashboard display, 4 to logout")
-                if input == 1:
-                    input = input("enter 1 for schedule personal training session, 2 for scheduling group fitenss class, 3 to exit")
+                user_input = input("1: Schedule Management\n"
+                                   "2: Profile Management\n"
+                                   "3: Dashboard Display\n"
+                                   "4: Logout\n>>> ")
+                if user_input == '1':
+                    user_input = input("1: Schedule Personal Training Session\n"
+                                       "2: Scheduling Group Fitenss Class\n"
+                                       "3: Exit"
+                                       "\n>>> ")
 
-                elif input == 2:
-                    input = input("enter 1 for update fitness goals, enter 2 for editing health metric, enter 3 for editing personal info, 4 to exit")
+                elif user_input == '2':
+                    user_input = input("1: Update Fitness Goals\n"
+                                       "2: Editing Health Metrics\n"
+                                       "3: Editing Personal Information\n"
+                                       "4: Exit"
+                                       "\n>>> ")
 
-                elif input == 3:
+                elif user_input == '3':
                     print()
                     #displaydashboard()
 
 
         elif account_type == "trainer":
             while True:
-                input = input("enter 1 for schedule management, 2 for profile management, enter 3 for member profile viewing, 4 to logout")
-                if input == 1:
-                    input = input("enter 1 for setting avilibility, 2 to exit")
+                user_input = input("1: Schedule management\n"
+                                   "2: Profile management\n"
+                                   "3: Member Profile Viewing\n"
+                                   "4: Logout"
+                                       "\n>>> ")
+                if user_input == '1':
+                    user_input = input("1: Setting Availibility\n"
+                                       "2: Exit"
+                                       "\n>>> ")
 
-                elif input == 2:
-                    input = input("TBD")
+                elif user_input == '2':
+                    user_input = input("TBD")
 
-                elif input == 3:
+                elif user_input == '3':
                     print()
                     #displaydashboard()
 
 
         elif account_type == "admin":
             while True:
-                input = input("enter 1 for room booking management, 2 for equipment maintenance monitoring, enter 3 for class schedule updating "
-                      "4 for billing and payment processing, 5 to logout")
-                if input == 1:
-                    input = input("enter 1 for setting avilibility, 2 to exit")
+                user_input = input( "1: Room Booking Management\n"
+                                    "2: Equipment Maintenance Monitoring\n"
+                                    "3: Class Schedule Updating\n"
+                                    "4: Billing and Payment Processing\n"
+                                    "5: Logout"
+                                       "\n>>> ")
+                if user_input == '1':
+                    user_input = input("1: Setting Availibility\n"
+                                       "2: Exit"
+                                       "\n>>> ")
 
-                elif input == 2:
-                    input = input("TBD")
+                elif user_input == '2':
+                    user_input = input("TBD")
 
-                elif input == 3:
+                elif user_input == '3':
                     print()
                     #displaydashboard()
 
