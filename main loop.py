@@ -53,7 +53,6 @@ while True:
         elif user_input == '2':
             try:
                 logged_in, user_id, account_type = account_management.login(cursor)
-                print(user_id, "  ", account_type)
             except Exception as error:
                 print("\nERROR: ", error)
         # Quit --------
