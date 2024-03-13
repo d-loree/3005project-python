@@ -1,6 +1,8 @@
 import hashlib
 import re
+from datetime import datetime
 
+# check if name is valid for database (<=20 characters)
 def get_name(prompt):
     while True:
         name = input(prompt)
@@ -8,6 +10,7 @@ def get_name(prompt):
             return name
         print("Error: Name must be 20 characters or less")
 
+# check if email is valid
 def get_email(prompt):
     email_check = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b"
     while True:
@@ -16,6 +19,7 @@ def get_email(prompt):
             return email
         print("Error: Not a valid email")
         
+# check if both password checks are the same
 def get_password():
     while True:
         password = input("Password: ")
@@ -24,6 +28,7 @@ def get_password():
             return password
         print("Error: Passwords did not match")
 
+# check if number follow xxx.xx format
 def get_float(prompt, type):
     weight_check = r"^\d{1,3}(\.\d{1,2})?$"
     while True:
@@ -32,14 +37,21 @@ def get_float(prompt, type):
             return weight
         print("Error: Not a valid", type)
 
+# check if date is valid and in proper format
 def get_date(prompt):
     date_check = r"^\d{4}\-\d{2}\-\d{2}$"
     while True:
         date = input(prompt)
         if re.fullmatch(date_check, date):
-            return date
-        print("Error: Not a valid date format (yyyy-mm-dd)")
+            try:
+                datetime.strptime(date, "%Y-%m-%d")
+                return date
+            except ValueError:
+                print("Error: Not a valid date")
+        else:
+            print("Error: Not a valid date format (yyyy-mm-dd)")
 
+# Create member account
 def create_account(cursor):
     # Get user information for account - should check if input is valid
     first_name = get_name("First Name: ")
@@ -64,6 +76,7 @@ def create_account(cursor):
     
     print("\n--- Successfully Created Account! ---\n")
 
+# logic logic
 def login(cursor):
     email = input("Email: ")
     password = input("Password: ")
