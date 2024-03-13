@@ -1,6 +1,10 @@
 import psycopg2
 import os
 from dotenv import load_dotenv
+import sys
+import account_management # account management functions
+
+
 
 # Load environment variables from .env file
 load_dotenv()
@@ -18,37 +22,42 @@ conn = psycopg2.connect(dbname=dbname, user=user, password=password, host=host, 
 # Create a cursor object to interact with the database
 cursor = conn.cursor()
 
-# Example: Execute a simple query
-cursor.execute("SELECT version();")
-version = cursor.fetchone()
-print("PostgreSQL version:", version)
+# # Example: Execute a simple query
+# cursor.execute("SELECT version();")
+# version = cursor.fetchone()
+# print("PostgreSQL version:", version)
 
-# Remember to close the cursor and connection when done
-cursor.close()
-conn.close()
+# # Close the cursor and connection
+# cursor.close()
+# conn.close()
 
-
-
+logged_in = False
+user_id = ""
+account_type = ""
 while True:
-
-    logged_in = False
-    account_type = ""
 
     if logged_in == False:
         user_input = input( "1: Create New Account\n"
                             "2: Login\n"
-                            "3: Quit")
+                            "3: Quit\n"
+                            ">>> ")
         # Create New Account --------
         if user_input == '1':
-            print()
-        
+            try:
+                account_management.create_account(cursor)
+                conn.commit()
+            except Exception as error:
+                print("\nERROR: ", error)
+                conn.rollback()    
         # Login --------
         elif user_input == '2':
-            print()
-
+            try:
+                logged_in, user_id, account_type = account_management.login(cursor)
+            except Exception as error:
+                print("\nERROR: ", error)
         # Quit --------
         elif user_input == '3':
-            print()
+            sys.exit()
 
     else:
         #if account type is user, display user functions, same for trainer, admin
@@ -59,7 +68,8 @@ while True:
                 user_input = input("1: Schedule Management\n"
                                    "2: Profile Management\n"
                                    "3: Dashboard Display\n"
-                                   "4: Logout\n>>> ")
+                                   "4: Logout\n"
+                                   ">>> ")
                 
                 # Schedule Management --------
                 if user_input == '1': 
@@ -108,7 +118,9 @@ while True:
 
                 # Logout --------
                 elif user_input == '4':
-                    break
+                    logged_in = False
+                    user_id = ""
+                    account_type = ""
 
 
         elif account_type == "trainer":
@@ -140,7 +152,9 @@ while True:
 
                 # Logout --------
                 elif user_input == '4':
-                    break
+                    logged_in = False
+                    user_id = ""
+                    account_type = ""
 
 
         elif account_type == "admin":
@@ -180,5 +194,9 @@ while True:
 
                 # Logout
                 elif user_input == '5':
-                    break
+                    logged_in = False
+                    user_id = ""
+                    account_type = ""
 
+cursor.close()
+conn.close()
