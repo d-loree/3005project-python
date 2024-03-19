@@ -1,7 +1,7 @@
 import hashlib
 import re
 from datetime import datetime
-
+from user import User
 # check if name is valid for database (<=20 characters)
 def get_name(prompt):
     while True:
@@ -90,9 +90,10 @@ def login(cursor):
     user = cursor.fetchone()
 
     if user is None:
-        print("\n--- No user found or incorrect password ---\n")
+        print("\n--- No user found or incorrect password ---")
     else:
-        print("\n--- Logged in! ---\n")
+        print("\n--- Logged in! ---")
         user_id, user_role = user
-        return True, user_id, user_role  # Logged in
-    return False, None, None  # Not logged in
+        current_user = User(user_id, user_role, True)
+        return current_user  # Logged in
+    return User(None, None, None)  # Not logged in
