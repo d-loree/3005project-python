@@ -11,12 +11,22 @@ def get_name(prompt):
         print("Error: Name must be 20 characters or less")
 
 # check if email is valid
-def get_email(prompt):
+def get_email(prompt, cursor):
     email_check = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b"
     while True:
         email = input(prompt)
+
+        # check if email already exists
+        cursor.execute("SELECT email FROM users WHERE email = %s", (email,))
+        email_exists = cursor.fetchone()
+        if(email_exists):
+            print ("Error: Email already exists")
+            continue
+
+        # if email is valid, return email
         if re.fullmatch(email_check, email):
             return email
+        # if email is not valid, print error and re-loop
         print("Error: Not a valid email")
         
 # check if both password checks are the same
@@ -56,7 +66,7 @@ def create_account(cursor):
     # Get user information for account - should check if input is valid
     first_name = get_name("First Name: ")
     last_name = get_name("Last Name: ")
-    email = get_email("Email: ")
+    email = get_email("Email: ", cursor)
     password = get_password()
     height = float(get_float("Height (Inches): ", "height"))
     weight = float(get_float("Weight (lbs): ", "weight"))

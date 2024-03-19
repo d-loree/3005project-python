@@ -12,7 +12,7 @@ def member_dashboard(current_user):
         # Schedule Management --------
         if user_input == '1': 
             user_input = input("1: Schedule Personal Training Session\n"
-                                "2: Scheduling Group Fitenss Class\n"
+                                "2: Scheduling Group Fitness Class\n"
                                 "3: Exit"
                                 "\n>>> ")
             # Schedule Personal Training Session --------
