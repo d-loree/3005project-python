@@ -31,7 +31,7 @@ current_user = User(None, None, None) # current user object/information
 while True:
 
     if current_user.logged_in != True:
-        user_input = input( "\n1: Create New Account\n"
+        user_input = input( "1: Create New Account\n"
                             "2: Login\n"
                             "3: Quit\n"
                             ">>> ")
@@ -59,7 +59,7 @@ while True:
         #if account type is user, display user functions, same for trainer, admin
 
         if current_user.account_type == "member":
-            current_user = member_dashboard(current_user)
+            current_user = member_dashboard(current_user, cursor, conn)
 
 
         elif current_user.account_type == "trainer":

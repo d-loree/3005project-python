@@ -17,7 +17,7 @@ def get_email(prompt, cursor):
         email = input(prompt)
 
         # check if email already exists
-        cursor.execute("SELECT email FROM users WHERE email = %s", (email,))
+        cursor.execute("SELECT email FROM users WHERE email = %s;", (email,))
         email_exists = cursor.fetchone()
         if(email_exists):
             print ("Error: Email already exists")
@@ -35,6 +35,10 @@ def get_password():
         password = input("Password: ")
         retyped_password = input("Retype Password: ")
         if password == retyped_password:
+            # Hash the password
+            h = hashlib.new("SHA256")
+            h.update(password.encode())
+            password = h.hexdigest()
             return password
         print("Error: Passwords did not match")
 
@@ -45,7 +49,7 @@ def get_float(prompt, type):
         weight = input(prompt)
         if re.fullmatch(weight_check, weight):
             return weight
-        print("Error: Not a valid", type)
+        print("Error: Not a valid ", type)
 
 # check if date is valid and in proper format
 def get_date(prompt):
@@ -73,13 +77,10 @@ def create_account(cursor):
     goal_weight = float(get_float("Goal Weight: ", "weight"))
     goal_deadline = get_date("Deadline to reach goal weight (yyyy-mm-dd): ")
 
-    # Hash the password
-    h = hashlib.new("SHA256")
-    h.update(password.encode())
-    password_hash = h.hexdigest()
+
 
     # Attempt to enter into database
-    cursor.execute("INSERT INTO users (first_name, last_name, email, password, role) VALUES (%s, %s, %s, %s, %s);", (first_name, last_name, email, password_hash, 'member'))
+    cursor.execute("INSERT INTO users (first_name, last_name, email, password, role) VALUES (%s, %s, %s, %s, %s);", (first_name, last_name, email, password, 'member'))
     cursor.execute("SELECT id FROM users WHERE email = %s;", (email,))
     member_id = cursor.fetchone()[0]
     cursor.execute("INSERT INTO members (member_id, goal_weight, goal_deadline, height, weight) VALUES (%s, %s, %s, %s, %s)", (member_id, goal_weight, goal_deadline, height, weight))
@@ -100,10 +101,57 @@ def login(cursor):
     user = cursor.fetchone()
 
     if user is None:
-        print("\n--- No user found or incorrect password ---")
+        print("\n--- No user found or incorrect password ---\n")
     else:
-        print("\n--- Logged in! ---")
+        print("\n--- Logged in! ---\n")
         user_id, user_role = user
         current_user = User(user_id, user_role, True)
         return current_user  # Logged in
     return User(None, None, None)  # Not logged in
+
+
+# update users goal weight
+def update_goal_weight(current_user, cursor, conn):
+    new_goal_weight = get_float("Enter new goal weight?: ", "weight")
+    cursor.execute("UPDATE members SET goal_weight = %s WHERE member_id = %s;", (new_goal_weight, current_user.user_id))
+    conn.commit()
+    print("\n--- Successfully updated your goal weight! ---\n")
+
+# update users weight
+def update_weight(current_user, cursor, conn):
+    new_weight = get_float("Enter new weight: ", "weight")
+    cursor.execute("UPDATE members SET weight = %s WHERE member_id = %s;", (new_weight, current_user.user_id))
+    conn.commit()
+    print("\n--- Successfully updated your weight! ---\n")
+
+# update users height
+def update_height(current_user, cursor, conn):
+    new_height = get_float("Enter new height: ", "height")
+    cursor.execute("UPDATE members SET height = %s WHERE member_id = %s;", (new_height, current_user.user_id))
+    conn.commit()
+    print("\n--- Successfully updated your height! ---\n")
+
+# update users name
+def update_name(current_user, cursor, conn):
+    new_first_name = get_name("Enter new first name: ")
+    new_last_name = get_name("Enter new last name: ")
+
+    cursor.execute("UPDATE users SET first_name = %s WHERE id = %s;", (new_first_name, current_user.user_id))
+    cursor.execute("UPDATE users SET last_name = %s WHERE id = %s;", (new_last_name, current_user.user_id))
+
+    conn.commit()
+    print("\n--- Successfully updated your name! ---\n")
+
+# update password 
+def update_password(current_user, cursor, conn):
+    new_password = get_password()
+    cursor.execute("UPDATE users SET password = %s WHERE id = %s;", (new_password, current_user.user_id))
+    conn.commit()
+    print("\n--- Successfully updated your password! ---\n")
+
+# update email
+def update_email(current_user, cursor, conn):
+    new_email = get_email("Email: ", cursor)
+    cursor.execute("UPDATE users SET email = %s WHERE id = %s;", (new_email, current_user.user_id))
+    conn.commit()
+    print("\n--- Successfully updated your email! ---\n")

@@ -1,6 +1,7 @@
 from user import User
+from account_management import update_goal_weight, update_height, update_weight, update_name, update_password, update_email
 
-def member_dashboard(current_user):
+def member_dashboard(current_user, cursor, conn):
     while True:
         # Member Dashboard --------
         user_input = input("1: Schedule Management\n"
@@ -19,7 +20,7 @@ def member_dashboard(current_user):
             if user_input == '1':
                 print()
 
-            # Scheduling Group Fitenss Class -------- 
+            # Scheduling Group Fitness Class -------- 
             if user_input == '2':
                 print()
             
@@ -29,25 +30,40 @@ def member_dashboard(current_user):
 
         # Profile Management --------
         elif user_input == '2':
-            user_input = input("1: Update Fitness Goals\n"
-                                "2: Editing Health Metrics\n"
-                                "3: Editing Personal Information\n"
-                                "4: Exit"
+            user_input = input("\n1: Update Goal Weight\n"
+                                "2: Update Weight\n"
+                                "3: Update Height\n"
+                                "4: Update Name\n"
+                                "5: Update Password\n"
+                                "6: Update Email\n"
+                                "7: Exit"
                                 "\n>>> ")
-            # Update Fitness Goals --------
+            # Update Goal Weight --------
             if user_input == '1':
-                print()
+                update_goal_weight(current_user, cursor, conn)
 
-            # Editing Health Metrics --------
+            # Update Weight --------
             if user_input == '2':
-                print()
+                update_weight(current_user, cursor, conn)
 
-            # Editing Personal Information --------
+            # Update Height --------
             if user_input == '3':
-                print()
+                update_height(current_user, cursor, conn)
+
+            # Update Name --------
+            if user_input == '4':
+                update_name(current_user, cursor, conn)
+
+            # Update password  --------
+            if user_input == '5':
+                update_password(current_user, cursor, conn)
+
+            # Update Email --------
+            if user_input == '6':
+                update_email(current_user, cursor, conn)
 
             # Exit --------
-            if user_input == '4':
+            if user_input == '7':
                 continue
             
         # DashBoard Display --------
@@ -57,3 +73,8 @@ def member_dashboard(current_user):
         # Logout --------
         elif user_input == '4':
             return User(None, None, None)
+        
+
+
+
+
