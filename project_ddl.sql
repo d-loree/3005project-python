@@ -4,7 +4,7 @@ CREATE TABLE users (
     last_name VARCHAR(20) NOT NULL,
     email TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL,
-    role VARCHAR(7) CHECK (role IN ('member', 'user', 'admin'))
+    role VARCHAR(7) CHECK (role IN ('member', 'trainer', 'admin'))
 );
 
 CREATE TABLE trainers (

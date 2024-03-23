@@ -63,7 +63,7 @@ while True:
 
 
         elif current_user.account_type == "trainer":
-            current_user = trainer_dashboard(current_user)
+            current_user = trainer_dashboard(current_user, cursor, conn)
 
 
         elif current_user.account_type == "admin":
