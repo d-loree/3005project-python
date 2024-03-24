@@ -1,4 +1,5 @@
 from user import User
+from trainer_availability_management import review_current_availability, add_availability, remove_availability
 
 def trainer_dashboard(current_user, cursor, conn):
         while True:
@@ -10,12 +11,21 @@ def trainer_dashboard(current_user, cursor, conn):
             
             # Schedule management --------
             if user_input == '1':
-                user_input = input("1: Setting Availability\n"
-                                    "2: Exit"
+                user_input = input("1: Review Current availability\n"
+                                   "2: Add Availability\n"
+                                   "3: Remove Availability\n"
+                                    "4: Exit"
                                     "\n>>> ")
                 if user_input == '1':
-                    print()
+                    review_current_availability(current_user, cursor)
+
                 elif user_input == '2':
+                    add_availability(current_user, cursor, conn)
+                          
+                elif user_input == '3':
+                    remove_availability(current_user, cursor, conn)
+
+                elif user_input == '4':
                     continue
 
             # Member Profile Viewing --------
@@ -32,8 +42,6 @@ def trainer_dashboard(current_user, cursor, conn):
                     print(f"{record[0]} {record[1]} \nEmail: {record[2]}"
                           f"\nGoal Weight: {record[3]}, Goal Deadline: {record[4]} \nHeight: {record[5]}, Weight: {record[6]}")
                     print("-" * 30)
-
-
 
             # Logout --------
             elif user_input == '3':

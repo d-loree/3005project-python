@@ -26,7 +26,7 @@ CREATE TABLE members (
 CREATE TABLE trainer_availability (
     availability_id SERIAL PRIMARY KEY,
     trainer_id INT REFERENCES trainers(trainer_id),
-    day_of_the_week VARCHAR(9) NOT NULL CHECK (day_of_the_week IN ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')),
+    day_of_the_week VARCHAR(9) NOT NULL CHECK (day_of_the_week IN ('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday')),
     start_time TIME NOT NULL,
     end_time TIME NOT NULL
 );
